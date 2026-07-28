@@ -1,6 +1,3 @@
-import os
-from weasyprint import HTML
-
 # Create HTML for the GDPS Website (index.html)
 website_html = """<!DOCTYPE html>
 <html lang="vi">
@@ -249,14 +246,6 @@ website_html = """<!DOCTYPE html>
     </script>
 </body>
 </html>
-"""
-
-# Save index.html
-with open("index.html", "w", encoding="utf-8") as f:
-    f.write(website_html)
-
-# Create PDF guide for creating GitHub Pages website
-guide_html = """<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
