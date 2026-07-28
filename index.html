@@ -1,0 +1,331 @@
+import os
+from weasyprint import HTML
+
+# Create HTML for the GDPS Website (index.html)
+website_html = """<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GDPS Website - Trang Chủ & Trợ Giúp</title>
+    <style>
+        :root {
+            --primary: #8a2be2;
+            --primary-hover: #9f40f5;
+            --bg-dark: #0f0f13;
+            --card-bg: #1a1a24;
+            --text-light: #f0f0f8;
+            --text-muted: #a0a0b0;
+            --accent: #00f2fe;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #120e24, #2a085c);
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(0,242,254,0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            background-color: var(--primary);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .hero-download {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+            background-color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #2b2b3d;
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #3f3f59;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #2a2a3a;
+        }
+
+        .card h2 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Player Lookup Section */
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 0.8rem;
+            border-radius: 6px;
+            border: 1px solid #333;
+            background-color: #0d0d12;
+            color: white;
+            font-size: 1rem;
+        }
+
+        /* FAQ Section */
+        .faq-item {
+            margin-bottom: 1rem;
+        }
+
+        .faq-question {
+            font-weight: bold;
+            color: #e0e0ff;
+            cursor: pointer;
+            padding: 0.5rem 0;
+        }
+
+        .faq-answer {
+            color: var(--text-muted);
+            padding-left: 1rem;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid #222;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Tun GDPS</h1>
+        <p>Máy chủ Geometry Dash Private Server</p>
+        <nav>
+            <a href="#download">Tải Game</a>
+            <a href="#lookup">Tra Cứu</a>
+            <a href="#help">Trợ Giúp</a>
+            <a href="https://discord.com/invite/NZHTVhTJuk" target="_blank">Discord</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Section Tải Game -->
+        <section id="download" class="card">
+            <h2>Tải Game Ngay</h2>
+            <p>Chọn nền tảng của bạn để tải xuống bản game đã patch sẵn kết nối GDPS:</p>
+            <div class="hero-download">
+                <a href="https://drive.google.com/file/d/1Xd4DmWUuszjSKAkPliBQj-GIrEhNW875/view?usp=drivesdk" class="btn">📱 Tải APK (Android)</a>
+                <a href="https://drive.google.com/file/d/1qH5NHXJBTa-_6U2eYhFdYRGiz7fZRnWV/view?usp=drivesdk" class="btn btn-secondary">💻 Tải PC (.ZIP)</a>
+            </div>
+        </section>
+
+        <!-- Section Tra Cứu Người Chơi -->
+        <section id="lookup" class="card">
+            <h2>Tra Cứu Người Chơi</h2>
+            <p>Nhập tên người chơi để tra cứu thông tin (Kết nối dữ liệu trực tiếp):</p>
+            <div class="search-box">
+                <input type="text" id="username" placeholder="Nhập Username...">
+                <button class="btn" onclick="searchPlayer()">Tìm kiếm</button>
+            </div>
+            <div id="player-result" style="color: var(--text-muted); margin-top: 1rem;">
+                <!-- Kết quả tìm kiếm sẽ hiển thị tại đây -->
+            </div>
+        </section>
+
+        <!-- Section Trung Tâm Trợ Giúp (Help Center) -->
+        <section id="help" class="card">
+            <h2>Trung Tâm Trợ Giúp (FAQ)</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">❓ Làm sao để đăng ký tài khoản?</div>
+                <div class="faq-answer">Mở game -> Chọn Account -> Register -> Điền Username, Mật khẩu và Email của bạn.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">❓ Bị lỗi "Download Failed" khi mở Level/Song?</div>
+                <div class="faq-answer">Hãy kiểm tra lại kết nối mạng hoặc thử bật/tắt VPN. Nếu dùng nhạc custom, hãy đảm bảo ID nhạc đã được upload lên server.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">❓ Làm thế nào để cài đặt Geode Mod Launcher?</div>
+                <div class="faq-answer">Tải Geode từ trang chủ Geode, cài đặt vào thư mục game PC của bạn và chọn DLL Server của GDPS trong phần setting.</div>
+            </div>
+            
+            <div style="margin-top: 1.5rem;">
+                <p>Cần hỗ trợ thêm? <a href="https://discord.com/invite/NZHTVhTJuk" style="color: var(--accent);">Gửi Ticket hỗ trợ tại Server Discord</a>.</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Tên GDPS Ofical. Powered by GitHub Pages.</p>
+    </footer>
+
+    <script>
+        function searchPlayer() {
+            const name = document.getElementById('username').value;
+            const resultDiv = document.getElementById('player-result');
+            if(!name) {
+                resultDiv.innerHTML = "<p style='color:red;'>Vui lòng nhập tên người chơi!</p>";
+                return;
+            }
+            // Hướng dẫn nhúng API hoặc chuyển hướng sang trang Cvolton/GDBrowser:
+            resultDiv.innerHTML = `<p>Đang tìm kiếm thông tin cho <b>${name}</b>...</p>
+            <p><i>(Lưu ý: Bạn có thể nhúng link CSDL hosting của bạn vào đây để xem profile chi tiết)</i></p>`;
+        }
+    </script>
+</body>
+</html>
+"""
+
+# Save index.html
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(website_html)
+
+# Create PDF guide for creating GitHub Pages website
+guide_html = """<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm 12mm;
+            background-color: #0d1117;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            color: #c9d1d9;
+            margin: 0;
+            padding: 0;
+            font-size: 10.5pt;
+            line-height: 1.5;
+        }
+        h1 {
+            color: #58a6ff;
+            font-size: 20pt;
+            border-bottom: 2px solid #30363d;
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+        h2 {
+            color: #79c0ff;
+            font-size: 13pt;
+            border-left: 4px solid #1f6feb;
+            padding-left: 8px;
+            margin-top: 18px;
+        }
+        p, li {
+            color: #8b949e;
+        }
+        ul, ol {
+            padding-left: 20px;
+        }
+        .code-box {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 10px;
+            font-family: monospace;
+            color: #e6edf3;
+            font-size: 9.5pt;
+            margin: 10px 0;
+        }
+        .step {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        .step-title {
+            font-weight: bold;
+            color: #58a6ff;
+            font-size: 11pt;
+            margin-bottom: 6px;
+        }
+        .note {
+            background-color: #261c06;
+            border: 1px solid #845306;
+            color: #f2cc60;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
